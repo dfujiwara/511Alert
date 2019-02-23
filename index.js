@@ -22,7 +22,7 @@ const parse511events = (responseJson) => {
         })
 }
 
-exports.helloHttp = (req, res) => {
+exports.trigger511 = (req, res) => {
     switch (req.method) {
         case 'GET':
             break
@@ -39,6 +39,6 @@ exports.helloHttp = (req, res) => {
         })
         .catch((error) => {
             res.sendStatus(500)
-            log.error(`${error}`)
+            log.error(`Encountered an error: ${error}`)
         })
 }
