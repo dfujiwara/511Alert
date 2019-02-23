@@ -20,6 +20,20 @@ const parse511events = (responseJson) => {
         .map(event => {
             return event.headline
         })
+        .filter(headline => {
+            return (headline.indexOf('San Francisco') != -1)
+        })
+        .reduce((headlineString, headline) => {
+            return `${headlineString}\n${headline}`
+        })
+}
+
+const notifyIfttt = (eventSummary) => {
+    return fetch(config.iftttWebHook, {
+        method: 'post',
+        body: JSON.stringify({ "value1": eventSummary}),
+        headers: { 'Content-Type': 'application/json' },
+    })
 }
 
 exports.trigger511 = (req, res) => {
@@ -34,8 +48,11 @@ exports.trigger511 = (req, res) => {
 
     fetch511Json()
         .then((responseBody) => {
-            const parsedBody = parse511events(responseBody)
-            res.json(parsedBody)
+            const eventSummary = parse511events(responseBody)
+            return notifyIfttt(eventSummary)
+        })
+        .then(() => {
+            res.sendStatus(200)
         })
         .catch((error) => {
             res.sendStatus(500)
