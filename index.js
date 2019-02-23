@@ -8,18 +8,18 @@ const opts = {
 const log = require('simple-node-logger').createSimpleLogger(opts)
 
 const fetch511Json = async () => {
-    const response = await fetch(`http://api.511.org/Traffic/Events/?api_key=${config.apiKey}&format=json`)
+    //  Currently we don't support pagination which is why we increase the limit to 50.
+    const response = await fetch(`http://api.511.org/Traffic/Events/?api_key=${config.apiKey}&format=json&status=ACTIVE&in_effect_on=now&limit=50`)
     const text = await response.text()
     const trimmedText = text.trim()
     return JSON.parse(trimmedText)
 }
 
 const parse511events = (responseJson) => {
-    responseJson.events.forEach(event => {
-        console.log('event is:')
-        console.log(event)
-    })
-    return responseJson
+    return responseJson.events
+        .map(event => {
+            return event.headline
+        })
 }
 
 exports.helloHttp = (req, res) => {
@@ -38,6 +38,7 @@ exports.helloHttp = (req, res) => {
             res.json(parsedBody)
         })
         .catch((error) => {
-            console.log(error)
+            res.sendStatus(500)
+            log.error(`${error}`)
         })
 }
