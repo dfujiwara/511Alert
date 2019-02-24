@@ -21,9 +21,9 @@ const parse511events = (responseJson) => {
       return event.headline
     })
     .filter(headline => {
-      return (headline.indexOf('San Francisco') != -1)
+      return (headline.indexOf('San Francisco') !== -1)
     })
-  if (filteredEvents.length == 0) {
+  if (filteredEvents.length === 0) {
     return 'No relevant traffic events'
   }
   return filteredEvents.reduce((headlineString, headline) => {
