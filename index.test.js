@@ -23,6 +23,10 @@ describe('testing', () => {
             { method: 'GET' },
             {
                 sendStatus: (status) => {
+                    expect(fetch.mock.calls.length).toBe(2)
+                    const {body} = fetch.mock.calls[1][1]
+                    const expectedBody = JSON.stringify({'value1': 'San Francisco traffic'})
+                    expect(body).toBe(expectedBody)
                     expect(status).toBe(200)
                     done()
                 }

@@ -31,7 +31,7 @@ const parse511events = (responseJson) => {
 const notifyIfttt = (eventSummary) => {
     return fetch(config.iftttWebHook, {
         method: 'post',
-        body: JSON.stringify({ "value1": eventSummary}),
+        body: JSON.stringify({ 'value1': eventSummary}),
         headers: { 'Content-Type': 'application/json' },
     })
 }
