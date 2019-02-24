@@ -4,7 +4,7 @@
   "description": "511 alerts in SF area",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "gcloud functions deploy trigger511 --runtime nodejs8 --trigger-http",
     "localStart": "functions deploy trigger511 --trigger-http"
   },
