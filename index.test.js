@@ -2,20 +2,6 @@ const trigger511 = require('./index').trigger511
 jest.mock('node-fetch')
 const fetch = require('node-fetch')
 
-test('non-GET methods should be rejected', () => {
-    let triggeredStatus
-    jest.useFakeTimers()
-    trigger511(
-        { method: 'POST' },
-        {
-            sendStatus: (status) => {
-                triggeredStatus = status
-            }
-        })
-    jest.runAllTicks()
-    expect(triggeredStatus).toBe(405)
-})
-
 describe('testing', () => {
     beforeEach(() => {
         jest.useFakeTimers()
@@ -38,6 +24,16 @@ describe('testing', () => {
             {
                 sendStatus: (status) => {
                     expect(status).toBe(200)
+                    done()
+                }
+            })
+    })
+    test('non-GET methods should be rejected', (done) => {
+        trigger511(
+            { method: 'POST' },
+            {
+                sendStatus: (status) => {
+                    expect(status).toBe(405)
                     done()
                 }
             })
