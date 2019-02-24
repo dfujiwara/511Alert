@@ -4,3 +4,7 @@ npm test
 if [ $? -ne 0 ]; then
     exit 1
 fi
+
+echo "Running eslint.."
+TOPLEVEL=$(git rev-parse --show-toplevel)
+$TOPLEVEL/node_modules/.bin/eslint $TOPLEVEL/*.js
