@@ -16,16 +16,19 @@ const fetch511Json = async () => {
 }
 
 const parse511events = (responseJson) => {
-    return responseJson.events
+    const filteredEvents = responseJson.events
         .map(event => {
             return event.headline
         })
         .filter(headline => {
             return (headline.indexOf('San Francisco') != -1)
         })
-        .reduce((headlineString, headline) => {
-            return `${headlineString}\n${headline}`
-        })
+    if (filteredEvents.length == 0) {
+        return 'No relevant traffic events'
+    }
+    return filteredEvents.reduce((headlineString, headline) => {
+        return `${headlineString}\n${headline}`
+    })
 }
 
 const notifyIfttt = (eventSummary) => {
@@ -41,8 +44,8 @@ exports.trigger511 = (req, res) => {
         case 'GET':
             break
         default:
-            res.sendStatus(405)
             log.error(`${req.method} is not allowed as a method`)
+            res.sendStatus(405)
             return
     }
 
@@ -55,7 +58,7 @@ exports.trigger511 = (req, res) => {
             res.sendStatus(200)
         })
         .catch((error) => {
-            res.sendStatus(500)
             log.error(`Encountered an error: ${error}`)
+            res.sendStatus(500)
         })
 }
