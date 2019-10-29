@@ -23,12 +23,12 @@ describe('testing', () => {
     trigger511(
       { method: 'GET' },
       {
-        sendStatus: (status) => {
-          expect(fetch.mock.calls.length).toBe(2)
-          const { body } = fetch.mock.calls[1][1]
-          const expectedBody = JSON.stringify({ 'value1': 'San Francisco traffic' })
-          expect(body).toBe(expectedBody)
+        status: function (status) {
           expect(status).toBe(200)
+          return this
+        },
+        send: (body) => {
+          expect(body).toBe('San Francisco traffic')
           done()
         }
       })
@@ -47,11 +47,12 @@ describe('testing', () => {
     trigger511(
       { method: 'GET' },
       {
-        sendStatus: (status) => {
-          const { body } = fetch.mock.calls[1][1]
-          const expectedBody = JSON.stringify({ 'value1': 'San Francisco traffic\nAnother San Francisco traffic' })
-          expect(body).toBe(expectedBody)
+        status: function (status) {
           expect(status).toBe(200)
+          return this
+        },
+        send: (body) => {
+          expect(body).toBe('San Francisco traffic\nAnother San Francisco traffic')
           done()
         }
       })
@@ -68,12 +69,12 @@ describe('testing', () => {
     trigger511(
       { method: 'GET' },
       {
-        sendStatus: (status) => {
+        status: function (status) {
           expect(status).toBe(200)
-          expect(fetch.mock.calls.length).toBe(2)
-          const { body } = fetch.mock.calls[1][1]
-          const expectedBody = JSON.stringify({ 'value1': 'No relevant traffic events' })
-          expect(body).toBe(expectedBody)
+          return this
+        },
+        send: (body) => {
+          expect(body).toBe('No relevant traffic events')
           done()
         }
       })
