@@ -31,14 +31,6 @@ const parse511events = (responseJson) => {
   })
 }
 
-const notifyIfttt = (eventSummary) => {
-  return fetch(config.iftttWebHook, {
-    method: 'post',
-    body: JSON.stringify({ 'value1': eventSummary }),
-    headers: { 'Content-Type': 'application/json' }
-  })
-}
-
 exports.trigger511 = (req, res) => {
   switch (req.method) {
     case 'GET':
@@ -52,10 +44,7 @@ exports.trigger511 = (req, res) => {
   fetch511Json()
     .then((responseBody) => {
       const eventSummary = parse511events(responseBody)
-      return notifyIfttt(eventSummary)
-    })
-    .then(() => {
-      res.sendStatus(200)
+      res.status(200).send(eventSummary)
     })
     .catch((error) => {
       log.error(`Encountered an error: ${error}`)
