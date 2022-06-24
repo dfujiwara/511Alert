@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/dfujiwara/511Alert#readme",
   "dependencies": {
-    "node-fetch": "^2.3.0",
+    "node-fetch": "^2.6.7",
     "simple-node-logger": "^18.12.22"
   },
   "devDependencies": {
